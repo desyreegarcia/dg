@@ -10,23 +10,23 @@ class BandoDeDados:
     def criar_tabelas(self):
         query_produto = """
             CREATE TABLE IF NOT EXISTS produto (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                categoria VARCHAR(255),
-                tamanho VARCHAR(10),
-                valor_venda FLOAT)
+                id INTERGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+                categoria TEXT(255) NOT NULL,
+                tamanho TEXT(10) NOT NULL,
+                valor_venda REAL NOT NULL)
         """
         query_cliente = """
             CREATE TABLE IF NOT EXISTS cliente (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                nome VARCHAR(255),
-                telefone VARCHAR(20));
+                id INTERGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+                nome TEXT(255) NOT NULL,
+                telefone TEXT(11) NOT NULL);
         """
         query_venda = """
             CREATE TABLE IF NOT EXISTS venda (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                cliente_id INT,
-                produto_id INT,
-                data_venda DATETIME,
+                id INTERGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+                cliente_id INTERGER NOT NULL,
+                produto_id INTERGER NOT NULL,
+                data_venda DATETIME NOT NULL,
                 FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
                 FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE CASCADE)
         """
@@ -43,9 +43,9 @@ class BandoDeDados:
         query = 'SELECT * FROM produto'
         return self.connection.execute(query).fetchall()
     
-banco = BandoDeDados("vendas_dg")
+banco = BandoDeDados("vendas_dg.db")
 #banco.criar_tabelas()
 #json_produto = {'categoria' : 'Americano Longo', 'tamanho':'G', 'valor_venda':'99.90'}
 #banco.cadastrar_produto(json_produto)
-resultado = banco.selecionar_produto(0)
+resultado = banco.selecionar_produto(1)
 print(resultado)

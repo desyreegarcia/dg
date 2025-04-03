@@ -3,17 +3,17 @@ from tkinter import messagebox
 from datetime import datetime
 
 # Conectar ao banco
-#conn, cursor = conectar()
+#conn, cursor = conexao_bd()
 
 # Função para cadastrar produtos
-'''def cadastrar_produto():
+def cadastrar_produto():
     categoria = entry_categoria.get()
     tamanho = entry_tamanho.get()
     valor = float(entry_valor.get())
 
-    cursor.execute("INSERT INTO produtos (categoria, tamanho, valor_venda) VALUES (%s, %s, %s)", 
-                   (categoria, tamanho, valor))
-    conn.commit()
+    #cursor.execute("INSERT INTO produtos (categoria, tamanho, valor_venda) VALUES (%s, %s, %s)", 
+                   #(categoria, tamanho, valor))
+    #conn.commit()
     messagebox.showinfo("Sucesso", "Produto cadastrado com sucesso!")
 
 # Função para cadastrar clientes
@@ -21,12 +21,12 @@ def cadastrar_cliente():
     nome = entry_nome.get()
     telefone = entry_telefone.get()
 
-    cursor.execute("INSERT INTO clientes (nome, telefone) VALUES (%s, %s)", (nome, telefone))
-    conn.commit()
+    #cursor.execute("INSERT INTO clientes (nome, telefone) VALUES (%s, %s)", (nome, telefone))
+    #conn.commit()
     messagebox.showinfo("Sucesso", "Cliente cadastrado com sucesso!")
 
 # Função para cadastrar vendas
-def cadastrar_venda():
+'''def cadastrar_venda():
     cliente_id = entry_cliente_id.get()
     total_venda = entry_total_venda.get()
 
@@ -57,7 +57,7 @@ def exibir_relatorios():
         for venda in vendas
     )
     
-    messagebox.showinfo("Relatório de Vendas", relatorio)
+    messagebox.showinfo("Relatório de Vendas", relatorio)'''
 
 # Criando a interface gráfica
 root = tk.Tk()
@@ -98,17 +98,17 @@ tk.Label(root, text="Total Venda:").pack()
 entry_total_venda = tk.Entry(root)
 entry_total_venda.pack()
 
-tk.Button(root, text="Cadastrar Venda", command=cadastrar_venda).pack()
+#tk.Button(root, text="Cadastrar Venda", command=cadastrar_venda).pack()
 
 # Botão para exibir relatório de vendas
-tk.Button(root, text="Relatório de Vendas", command=exibir_relatorios).pack()
+#tk.Button(root, text="Relatório de Vendas", command=exibir_relatorios).pack()
 
 # Fechar conexão com o banco ao fechar a aplicação
-def fechar_conexao():
+'''def fechar_conexao():
     cursor.close()
     conn.close()
     root.destroy()
 
-root.protocol("WM_DELETE_WINDOW", fechar_conexao)
+root.protocol("WM_DELETE_WINDOW", fechar_conexao)'''
 
-root.mainloop()'''
+root.mainloop()
