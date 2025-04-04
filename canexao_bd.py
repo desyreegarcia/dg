@@ -39,13 +39,41 @@ class BandoDeDados:
         self.connection.execute(query, produto)
         self.connection.commit()
 
-    def selecionar_produto(self, id: int) -> list:
-        query = 'SELECT * FROM produto'
-        return self.connection.execute(query).fetchall()
+    def selecionar_produto(self, id: int = 0) -> list:
+        if id > 0:
+            query = f'SELECT * FROM produto WHERE id={id}'
+            return self.connection.execute(query).fetchall()
+        else:
+            query = 'SELECT * FROM produto'
+            return self.connection.execute(query).fetchall()
+        
+    def cadastrar_cliente(self, cliente : dict):
+        query = "INSERT INTO cliente (nome, telefone) VALUES (:nome, :telefone)"
+        self.connection.execute(query, cliente)
+        self.connection.commit()
+
+    def selecionar_cliente(self, id: int = 0) -> list:
+        if id > 0:
+            query = f'SELECT * FROM cliente WHERE id={id}'
+            return self.connection.execute(query).fetchall()
+        else:
+            query = 'SELECT * FROM cliente'
+            return self.connection.execute(query).fetchall()
+        
+    def cadastrar_venda(self, cliente : dict):
+        query = "INSERT INTO venda (cliente, produto, data) VALUES (:cliente, :produto, :data)"
+        self.connection.execute(query, cliente)
+        self.connection.commit()
+
+    def selecionar_venda(self, id: int = 0) -> list:
+        if id > 0:
+            query = f'SELECT * FROM venda WHERE id={id}'
+            return self.connection.execute(query).fetchall()
+        else:
+            query = 'SELECT * FROM venda'
+            return self.connection.execute(query).fetchall()
     
 banco = BandoDeDados("vendas_dg.db")
 #banco.criar_tabelas()
-#json_produto = {'categoria' : 'Americano Longo', 'tamanho':'G', 'valor_venda':'99.90'}
-#banco.cadastrar_produto(json_produto)
 resultado = banco.selecionar_produto(1)
 print(resultado)

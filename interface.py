@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import Tk, Label, Entry, Button, messagebox
 from datetime import datetime
 
 # Conectar ao banco
@@ -60,42 +60,42 @@ def exibir_relatorios():
     messagebox.showinfo("Relatório de Vendas", relatorio)'''
 
 # Criando a interface gráfica
-root = tk.Tk()
-root.title("Loja de Pijamas")
+interface = Tk()
+interface.title("DG Pijamas")
 
 # Formulário para cadastrar produtos
-tk.Label(root, text="Categoria:").pack()
-entry_categoria = tk.Entry(root)
+categoria = Label(interface, text="Categoria:").pack()
+entry_categoria = Entry(interface)
 entry_categoria.pack()
 
-tk.Label(root, text="Tamanho:").pack()
-entry_tamanho = tk.Entry(root)
+Label(interface, text="Tamanho:").pack()
+entry_tamanho = Entry(interface)
 entry_tamanho.pack()
 
-tk.Label(root, text="Valor Venda:").pack()
-entry_valor = tk.Entry(root)
+Label(interface, text="Valor Venda:").pack()
+entry_valor = Entry(interface)
 entry_valor.pack()
 
-tk.Button(root, text="Cadastrar Produto", command=cadastrar_produto).pack()
+Button(interface, text="Cadastrar Produto", command=cadastrar_produto).pack()
 
 # Formulário para cadastrar clientes
-tk.Label(root, text="Nome:").pack()
-entry_nome = tk.Entry(root)
+Label(interface, text="Nome:").pack()
+entry_nome = Entry(interface)
 entry_nome.pack()
 
-tk.Label(root, text="Telefone:").pack()
-entry_telefone = tk.Entry(root)
+Label(interface, text="Telefone:").pack()
+entry_telefone = Entry(interface)
 entry_telefone.pack()
 
-tk.Button(root, text="Cadastrar Cliente", command=cadastrar_cliente).pack()
+Button(interface, text="Cadastrar Cliente", command=cadastrar_cliente).pack()
 
 # Formulário para cadastrar vendas
-tk.Label(root, text="ID do Cliente:").pack()
-entry_cliente_id = tk.Entry(root)
+Label(interface, text="ID do Cliente:").pack()
+entry_cliente_id = Entry(interface)
 entry_cliente_id.pack()
 
-tk.Label(root, text="Total Venda:").pack()
-entry_total_venda = tk.Entry(root)
+Label(interface, text="Total Venda:").pack()
+entry_total_venda = Entry(interface)
 entry_total_venda.pack()
 
 #tk.Button(root, text="Cadastrar Venda", command=cadastrar_venda).pack()
@@ -111,4 +111,4 @@ entry_total_venda.pack()
 
 root.protocol("WM_DELETE_WINDOW", fechar_conexao)'''
 
-root.mainloop()
+interface.mainloop()
