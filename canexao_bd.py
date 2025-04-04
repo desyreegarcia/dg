@@ -10,22 +10,22 @@ class BandoDeDados:
     def criar_tabelas(self):
         query_produto = """
             CREATE TABLE IF NOT EXISTS produto (
-                id INTERGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+                id INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
                 categoria TEXT(255) NOT NULL,
                 tamanho TEXT(10) NOT NULL,
                 valor_venda REAL NOT NULL)
         """
         query_cliente = """
             CREATE TABLE IF NOT EXISTS cliente (
-                id INTERGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+                id INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
                 nome TEXT(255) NOT NULL,
                 telefone TEXT(11) NOT NULL);
         """
         query_venda = """
             CREATE TABLE IF NOT EXISTS venda (
-                id INTERGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
-                cliente_id INTERGER NOT NULL,
-                produto_id INTERGER NOT NULL,
+                id INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+                cliente_id INTEGER NOT NULL,
+                produto_id INTEGER NOT NULL,
                 data_venda DATETIME NOT NULL,
                 FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
                 FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE CASCADE)
@@ -75,5 +75,5 @@ class BandoDeDados:
     
 banco = BandoDeDados("vendas_dg.db")
 #banco.criar_tabelas()
-resultado = banco.selecionar_produto(1)
+resultado = banco.selecionar_cliente(1)
 print(resultado)

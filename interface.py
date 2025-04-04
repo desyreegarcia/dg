@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import Tk, Label, Entry, Button, messagebox
 from datetime import datetime
+from produto import Produto
+from cliente import Cliente
 
 # Conectar ao banco
 #conn, cursor = conexao_bd()
@@ -18,8 +20,8 @@ def cadastrar_produto():
 
 # Função para cadastrar clientes
 def cadastrar_cliente():
-    nome = entry_nome.get()
-    telefone = entry_telefone.get()
+    nome = entry_cliente.get()
+    telefone = entry_fone.get()
 
     #cursor.execute("INSERT INTO clientes (nome, telefone) VALUES (%s, %s)", (nome, telefone))
     #conn.commit()
@@ -64,32 +66,39 @@ interface = Tk()
 interface.title("DG Pijamas")
 
 # Formulário para cadastrar produtos
-categoria = Label(interface, text="Categoria:").pack()
+categoria = Label(interface, text="Categoria:")
+categoria.grid(row=0, column=0)
 entry_categoria = Entry(interface)
-entry_categoria.pack()
+entry_categoria.grid(row=0, column=1)
 
-Label(interface, text="Tamanho:").pack()
+tamanho = Label(interface, text="Tamanho:")
+tamanho.grid(row=1, column=0)
 entry_tamanho = Entry(interface)
-entry_tamanho.pack()
+entry_tamanho.grid(row=1, column=1)
 
-Label(interface, text="Valor Venda:").pack()
+valor = Label(interface, text="Valor Venda:")
+valor.grid(row=2, column=0)
 entry_valor = Entry(interface)
-entry_valor.pack()
+entry_valor.grid(row=2, column=1)
 
-Button(interface, text="Cadastrar Produto", command=cadastrar_produto).pack()
+btn_produto = Button(interface, text="Cadastrar Produto", command=cadastrar_produto)
+btn_produto.grid(row=3, column=1)
 
 # Formulário para cadastrar clientes
-Label(interface, text="Nome:").pack()
-entry_nome = Entry(interface)
-entry_nome.pack()
+cliente = Label(interface, text="Nome:")
+cliente.grid(row=6, column=0)
+entry_cliente = Entry(interface)
+entry_cliente.grid(row=6, column=1)
 
-Label(interface, text="Telefone:").pack()
-entry_telefone = Entry(interface)
-entry_telefone.pack()
+fone = Label(interface, text="Telefone:")
+fone.grid(row=7, column=0)
+entry_fone = Entry(interface)
+entry_fone.grid(row=7, column=1)
 
-Button(interface, text="Cadastrar Cliente", command=cadastrar_cliente).pack()
+btn_cliente = Button(interface, text="Cadastrar Cliente", command=cadastrar_cliente)
+btn_cliente.grid(row=8, column=1)
 
-# Formulário para cadastrar vendas
+'''# Formulário para cadastrar vendas
 Label(interface, text="ID do Cliente:").pack()
 entry_cliente_id = Entry(interface)
 entry_cliente_id.pack()
@@ -104,7 +113,7 @@ entry_total_venda.pack()
 #tk.Button(root, text="Relatório de Vendas", command=exibir_relatorios).pack()
 
 # Fechar conexão com o banco ao fechar a aplicação
-'''def fechar_conexao():
+def fechar_conexao():
     cursor.close()
     conn.close()
     root.destroy()
