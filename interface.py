@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Tk, Label, Entry, Button, messagebox
+from tkinter import StringVar, Tk, Label, Entry, Button, messagebox, ttk
 from datetime import datetime
 from canexao_bd import BandoDeDados
 from produto import Produto
@@ -22,38 +22,35 @@ def cadastrar_cliente(cliente, telefone):
     messagebox.showinfo("Sucesso", "Cliente cadastrado com sucesso!")
 
 # Função para cadastrar vendas
-'''def cadastrar_venda():
-    cliente_id = entry_cliente_id.get()
-    total_venda = entry_total_venda.get()
+def cadastrar_venda():
+    cliente_id = cliente_dict.get(cliente_var.get())
+    produto_id = produto_dict.get(produto_var.get())
 
-    if not cliente_id.isdigit() or not total_venda.replace(".", "").isdigit():
-        messagebox.showerror("Erro", "ID do cliente e total da venda devem ser números.")
+    if not cliente_id or not produto_id:
+        messagebox.showerror("Erro", "Selecione cliente e produto.")
         return
 
-    cliente_id = int(cliente_id)
-    total_venda = float(total_venda)
-    data_venda = datetime.now()
-
-    cursor.execute("INSERT INTO vendas (cliente_id, data_venda, total_venda) VALUES (%s, %s, %s)", 
-                   (cliente_id, data_venda, total_venda))
-    conn.commit()
+    venda = {'cliente_id': cliente_id, 'produto_id': produto_id,'data_venda': datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
     messagebox.showinfo("Sucesso", "Venda cadastrada com sucesso!")
+    listar_vendas()
 
-# Função para exibir relatórios
-def exibir_relatorios():
-    cursor.execute("SELECT * FROM vendas")
-    vendas = cursor.fetchall()
-    
-    if not vendas:
-        messagebox.showinfo("Relatório de Vendas", "Nenhuma venda registrada ainda.")
-        return
+def listar_vendas():
+    for row in treeview.get_children():
+        treeview.delete(row)
 
-    relatorio = "\n".join(
-        f"ID: {venda[0]} | Cliente ID: {venda[1]} | Data: {venda[2]} | Total: {venda[3]}€"
-        for venda in vendas
-    )
-    
-    messagebox.showinfo("Relatório de Vendas", relatorio)'''
+    vendas = conexao.selecionar_venda()
+    for venda in vendas:
+        venda_id, cliente_id, produto_id, data_venda = venda
+
+        cliente = conexao.selecionar_cliente(cliente_id)
+        produto = conexao.selecionar_produto(produto_id)
+
+        if cliente and produto:
+            cliente_nome = cliente[0][1]
+            categoria = produto[0][1]
+            valor_venda = produto[0][3]
+
+            treeview.insert('', 'end', values=(cliente_nome, categoria, valor_venda, data_venda))
 
 # Criando a interface gráfica
 interface = Tk()
@@ -83,43 +80,52 @@ btn_produto = Button(
 btn_produto.grid(row=5, column=1, pady=10)
 
 # Formulário para cadastrar clientes
-titulo_cadastro_cliente = Label(interface, text="Cadastro de Clientes")
-titulo_cadastro_cliente.grid(row=6, column=0, columnspan=2, pady=10)
-cliente = Label(interface, text="Nome:")
-cliente.grid(row=7, column=0)
-entry_cliente = Entry(interface)
-entry_cliente.grid(row=7, column=1)
+titulo_cadastro_cliente = Label(interface, text="Cadastro de Clientes").grid(row=6, column=0, columnspan=2, pady=10)
+cliente = Label(interface, text="Nome:").grid(row=7, column=0)
+entry_cliente = Entry(interface).grid(row=7, column=1)
 
-telefone = Label(interface, text="Telefone:")
-telefone.grid(row=8, column=0)
-entry_telefone = Entry(interface)
-entry_telefone.grid(row=8, column=1)
+telefone = Label(interface, text="Telefone:").grid(row=8, column=0)
+entry_telefone = Entry(interface).grid(row=8, column=1)
 
 btn_cliente = Button(
     interface, text="Cadastrar Cliente",
     command=lambda:cadastrar_cliente(entry_cliente.get(), entry_telefone.get()))
 btn_cliente.grid(row=9, column=1, pady=10)
 
-'''# Formulário para cadastrar vendas
-Label(interface, text="ID do Cliente:").pack()
-entry_cliente_id = Entry(interface)
-entry_cliente_id.pack()
+# Formulário para cadastrar vendas
+titulo_cadastro_venda = Label(interface, text="Cadastrar Nova Venda").grid(row=10, column=0, columnspan=2, pady=10)
 
-Label(interface, text="Total Venda:").pack()
-entry_total_venda = Entry(interface)
-entry_total_venda.pack()
+cliente_var = StringVar()
+produto_var = StringVar()
 
-#tk.Button(root, text="Cadastrar Venda", command=cadastrar_venda).pack()
+# Listas do banco
+clientes = conexao.selecionar_cliente() #Isso retorna uma lista com os dados dos clientes, algo assim: [(1, 'Ana', '11999999999'), (2, 'Carlos', '11888888888')]
+produtos = conexao.selecionar_produto() #Isso retorna uma lista com os dados dos produtos
 
-# Botão para exibir relatório de vendas
-#tk.Button(root, text="Relatório de Vendas", command=exibir_relatorios).pack()
+# Dicionários exibição id
+cliente_dict = {f"{c[0]} - {c[1]}": c[0] for c in clientes} #Para cada cliente c na lista clientes, crie uma chave do tipo "id - nome" e associe ao id
+produto_dict = {f"{p[0]} - {p[1]} - {p[2]}": p[0] for p in produtos} #Para cada produto p na lista produto, crie uma chave do tipo "id - produto - valor" e associe ao id
 
-# Fechar conexão com o banco ao fechar a aplicação
-def fechar_conexao():
-    cursor.close()
-    conn.close()
-    root.destroy()
+venda_produto = Label(interface, text="Selecione o Produto:").grid(row=11, column=0)
+entry_venda_produto = ttk.Combobox(interface, textvariable=produto_var, values=list(produto_dict.keys())).grid(row=11, column=1)
 
-root.protocol("WM_DELETE_WINDOW", fechar_conexao)'''
+venda_cliente = Label(interface, text="Selecione o Cliente:").grid(row=12, column=0)
+entry_venda_cliente = ttk.Combobox(interface, textvariable=cliente_var, values=list(cliente_dict.keys())).grid(row=12, column=1)
 
+venda_data = Label(interface, text="Selecione a data:").grid(row=13, column=0)
+entry_venda_data = Entry(interface).grid(row=13, column=1)
+
+btn_venda = Button(
+    interface, text="Cadastrar Venda",
+    command=cadastrar_venda)
+btn_venda.grid(row=14, column=1, pady=10)
+
+treeview = ttk.Treeview(interface, columns=("cliente", "categoria", "valor_venda", "data_venda"), show="headings")
+treeview.heading("cliente", text="cliente")
+treeview.heading("categoria", text="categoria")
+treeview.heading("valor_venda", text="valor_venda")
+treeview.heading("data_venda", text="data_venda")
+treeview.grid(row=15, column=0, columnspan=4, pady=10, sticky="nsew")
+
+listar_vendas()
 interface.mainloop()

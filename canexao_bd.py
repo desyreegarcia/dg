@@ -61,7 +61,7 @@ class BandoDeDados:
             return self.connection.execute(query).fetchall()
         
     def cadastrar_venda(self, cliente : dict):
-        query = "INSERT INTO venda (cliente, produto, data) VALUES (:cliente, :produto, :data)"
+        query = "INSERT INTO venda (cliente_id, produto_id, data_venda) VALUES (:cliente_id, :produto_id, :data_venda)"
         self.connection.execute(query, cliente)
         self.connection.commit()
 
@@ -75,7 +75,7 @@ class BandoDeDados:
     
 banco = BandoDeDados("vendas_dgpijamas.db")
 
-#banco.criar_tabelas()
+banco.criar_tabelas()
 
 '''
 json_produto = {'categoria':'testeJSon', 'tamanho':'1', 'valor_venda':'1'}
